@@ -4,32 +4,33 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
-app.get('/produtos', (req, res) => {
+const cors = require('cors');
+app.use(cors());
+
+app.get('/produtos', (req, response) => {
   const sql = 'SELECT * FROM produtos';
     pool.query(sql, (err, result) => {
-  
-        res.json(result.rows);
+        response.json(result.rows);
     });
 
 });
 
-app.get('/produtos/:id', (req, res) => {
+app.get('/produtos/:id', (req, response) => {
   const id = req.params.id;
   const sql = 'SELECT * FROM produtos WHERE id = $1';
     pool.query(sql, [id], (err, result) => {
-        if (result.rows.length > 0) {
-            res.json(result.rows[0]);
-        } else {
-            res.status(404).json({ message: 'Produto não encontrado' });
-        }
+    response.json(result.rows);
     });
 });
 
-app.post('/produtos', (req, res) => {
-  const { nome, preco } = req.body;
+
+
+app.post('/produtos', (req, response) => {
+  const nome = req.body.nome;
+  const preco = req.body.preco;
   const sql = 'INSERT INTO produtos (nome, preco) VALUES ($1, $2) RETURNING *';
     pool.query(sql, [nome, preco], (err, result) => {
-        res.status(201).json(result.rows[0]);
+        response.status(201).json(result.rows[0]);
     });
 });
 
