@@ -41,15 +41,24 @@ catch(erro) {
 const formulario = document.getElementById("formulario");
 
 formulario.addEventListener("submit", async function(evento) {
+    evento.preventDefault();
 
     const nome = document.getElementById("nome").value;
     const descricao = document.getElementById("descricao").value;
     const preco = document.getElementById("preco").value;
 
-    try{
+    try {
+        const resposta = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, preco, descricao })
+        });
 
-
-
+        formulario.reset();
+        buscarProdutos();
+        
+    } catch (erro) {
+        console.error("Erro ao salvar produto:", erro);
     }
 
 });
