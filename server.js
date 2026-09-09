@@ -28,8 +28,9 @@ app.get('/produtos/:id', (req, response) => {
 app.post('/produtos', (req, response) => {
   const nome = req.body.nome;
   const preco = req.body.preco;
-  const sql = 'INSERT INTO produtos (nome, preco) VALUES ($1, $2) RETURNING *';
-    pool.query(sql, [nome, preco], (err, result) => {
+  const descricao = req.body.descricao;
+  const sql = 'INSERT INTO produtos (nome, preco, descricao) VALUES ($1, $2, $3) RETURNING *';
+    pool.query(sql, [nome, preco, descricao], (err, result) => {
         response.status(201).json(result.rows[0]);
     });
 });
