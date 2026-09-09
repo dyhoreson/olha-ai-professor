@@ -20,6 +20,7 @@ dados.forEach( produto => {
         <h3>${produto.nome}</h3>
         <p>${produto.descricao}</p>
         <p>R$ ${produto.preco}</p>
+        <button id="deletar-${produto.id}" onclick="deletarProduto(${produto.id})">Deletar</button>
     </div>
     `
 document.getElementById("lista-produtos").innerHTML += card;});
@@ -56,12 +57,27 @@ formulario.addEventListener("submit", async function(evento) {
 
         formulario.reset();
         buscarProdutos();
-        
+
     } catch (erro) {
         console.error("Erro ao salvar produto:", erro);
     }
+  window.location.reload();
 
 });
 
 // Executa a busca de produtos assim que a página abre
 buscarProdutos();
+
+
+async function deletarProduto(id) {
+    try {
+        const resposta = await fetch(`${url}/${id}`, {
+            method: "DELETE"
+        });
+        buscarProdutos();
+    } catch (erro) {
+        console.error("Erro ao deletar produto:", erro);
+    }
+    alert("Produto deletado com sucesso!");
+    window.location.reload();
+}
