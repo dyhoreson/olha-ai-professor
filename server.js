@@ -39,6 +39,8 @@ app.post('/produtos', (req, response) => {
   });
 });
 
+
+
 app.delete('/produtos/:id', (req, response) => {
   const id = req.params.id;
   const sql = 'DELETE FROM produtos WHERE id = $1 RETURNING *';
